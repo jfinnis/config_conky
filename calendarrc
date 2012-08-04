@@ -1,0 +1,45 @@
+background yes
+use_xft yes
+xftfont 123:size=8
+xftalpha 0.2
+update_interval 600
+total_run_times 0
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 1600 80
+maximum_width 1600
+no_buffers yes
+cpu_avg_samples 2
+net_avg_samples 2
+use_spacer right
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+border_inner_margin 0
+border_outer_margin 0 
+override_utf8_locale yes
+default_color white  
+alignment bottom_left
+uppercase no
+text_buffer_size 2048
+imlib_cache_size 0 
+gap_x 10
+gap_y 0
+
+#### colorscheme
+default_color white
+color0 696969           # dimgray-ish
+color1 d9d9d9           # white-ish
+color2 tan1             # peach/orange
+color3 darkslategray    # dark blue/green
+
+TEXT
+
+${color2}${voffset 65}${goto 206}${font Caviar Dreams:bold:size=18}${time %A}${font Caviar Dreams:bold:size=40}${goto 335} ${color1}${offset 10}${time %d}$color
+${color2}${voffset -50}${font Caviar Dreams:bold:size=24}${goto 206}${time %b}${font Caviar Dreams:bold:size=16}${goto 288}${color1}${voffset 4}${time %Y}$color1
+${goto 358}${color3}${voffset -26}${hr 2}
+${voffset -60}$color${execpi 600 /home/josh/.conky/scripts/horical.sh}${color1}

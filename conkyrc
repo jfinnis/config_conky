@@ -1,0 +1,113 @@
+alignment top_right
+background yes
+border_inner_margin 6
+border_outer_margin 6
+border_width 2
+cpu_avg_samples 2
+default_bar_size 0 7
+double_buffer yes
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+gap_x 10
+gap_y 30
+font arial
+if_up_strictness address
+maximum_width 230
+minimum_size 200 5
+net_avg_samples 1
+no_buffers no
+override_utf8_locale yes
+own_window yes
+own_window_class Conky
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_transparent yes
+own_window_type normal
+short_units yes
+temperature_unit fahrenheit
+text_buffer_size 256
+total_run_times 0
+use_spacer right
+update_interval 1
+uppercase no
+use_xft yes
+xftalpha 0.1
+xftfont 123:size=8
+
+#### colorscheme
+default_color white
+color0 d9d9d9    # white-ish
+color1 696969    # dimgray-ish
+color2 tan1
+color3 darkslategray
+
+TEXT
+
+######## time + stats #############
+${voffset -20}${font Helvetica LT Std :size=60}${color0}${goto 20}${time %H}${goto 110}${color b9b9b9}${time %M}${font Helvetica LT Std :size=30}${color0}${goto 200}${time %S}
+
+${color1}${font}${voffset -70}
+OS${goto 65}$color0${exec tail -n1 /etc/lsb-release | cut -d\" -f2}$color1
+${voffset 1}${font}Kernel${goto 65}$color0$kernel$color1
+${voffset 1}Uptime${goto 65}$color0$uptime$color1
+${voffset -40}$alignr${font :size=11}Battery      
+${voffset 1}$alignr${font :size=11}$color0${battery_percent C1E9}${if_match "$acpiacadapter" == "on-line"}${image /home/josh/.conky/images/plug_on.png -p 210,84 -s 10x20}$else${image /home/josh/.conky/images/plug_off.png -p 210,84 -s 10x20}$endif     
+
+######## system info ##############
+${voffset -12}${font Arial:bold:size=10}${color2}SYSTEM ${color3} ${hr 2} ${color1} ${font}
+${voffset 4}CPU ${voffset -5}${goto 79}${cpugraph cpu0 15,80}  ${cpugraph cpu1 15,80}
+${color0}${voffset -22}${goto 83}${cpu cpu0}%${goto 169}${cpu cpu1}%${color1}
+${voffset 6}MEM ${voffset -6}${goto 79}${membar 15,165}
+${voffset -22}${goto 83}${color0}$mem of $memmax${color1}
+
+######### hdd ###########
+${voffset -7}/root${goto 79}${voffset -6}${fs_bar 15,165 /}
+${voffset -22}${goto 83}${color0}${fs_used /} of ${fs_size /}${color1}
+${voffset 6}/home${goto 79}${voffset -6}${fs_bar 15,165 /home}
+${voffset -22}${goto 83}${color0}${fs_used /home} of ${fs_size /home}${color1}
+${if_mounted /media/2CA00178A00149B2}${voffset 6}/windows${goto 79}${voffset -6}${fs_bar 15,165 /media/2CA00178A00149B2}
+${voffset -22}${goto 83}${color0}${fs_used /media/2CA00178A00149B2} of ${fs_size /media/2CA00178A00149B2}${color1}${else}${voffset -13}${endif}
+
+######### network ##########
+${voffset -8}${font Arial:bold:size=10}${color2}WIRELESS ${color3}${hr 2}${color1}${font}
+${voffset 5}Bandwidth${goto 79}${voffset -6}${downspeedgraph wlan0 15,80}  ${upspeedgraph wlan0 15,80}
+${voffset -22}$color0${goto 83}${downspeed wlan0}${goto 169}${upspeed wlan0}$color1
+${voffset 6}WiFi SSID${goto 79}${color0}${wireless_essid wlan0}$color1
+${voffset 6}External IP${goto 79}${color0}${exec wget -O - -q icanhazip.com}$color1
+${voffset 6}Internal IP${goto 79}${color0}${addr wlan0}$color1
+${if_mounted /media/2CA00178A00149B2}${if_match ${wireless_link_qual_perc wlan0} < 20} ${image /home/josh/.conky/images/wi-bar1.png -p 170,275 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 40} ${image /home/josh/.conky/images/wi-bar2.png -p 170,275 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 60} ${image /home/josh/.conky/images/wi-bar3.png -p 170,275 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 80} ${image /home/josh/.conky/images/wi-bar4.png -p 170,275 -s 60x40} $else${image /home/josh/.conky/images/wi-bar5.png -p 170,275 -s 60x40}$endif$endif$endif$endif$else${if_match ${wireless_link_qual_perc wlan0} < 20} ${image /home/josh/.conky/images/wi-bar1.png -p 170,256 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 40} ${image /home/josh/.conky/images/wi-bar2.png -p 170,256 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 60} ${image /home/josh/.conky/images/wi-bar3.png -p 170,256 -s 60x40} $else${if_match ${wireless_link_qual_perc wlan0} < 80} ${image /home/josh/.conky/images/wi-bar4.png -p 170,256 -s 60x40} $else${image /home/josh/.conky/images/wi-bar5.png -p 170,256 -s 60x40}$endif$endif$endif$endif$endif
+${if_up eth0}${voffset -10}${font Arial:bold:size=10}${color2}ETHERNET ${color3}${hr 2}${color1}${font}
+${voffset 7}Bandwidth${goto 79}${voffset -6}${downspeedgraph eth0 15,80}  ${upspeedgraph eth0 15,80}
+${voffset -22}$color0${goto 83}${downspeed eth0}${goto 169}${upspeed eth0}$color1
+${voffset 6}External IP${goto 79}${color0}${exec wget -O - -q icanhazip.com}$color1
+${voffset 6}Internal IP${goto 79}${color0}${addr eth0}$color1${image /home/josh/.conky/images/eth-net.png -p 178,368 -s 46x25}${else}${voffset -38}
+${endif}
+
+######### processes ###########
+${voffset -9}${font Arial:bold:size=10}${color2}PROCESSES ${color3}${hr 2}${color1}${font}
+${voffset 4}${color0}Name${goto 97}CPU%${goto 135}Name${alignr}MEM%$color1
+${top name 1}${goto 97}${top cpu 1}${goto 135}${top_mem name 1}${goto 210}$alignr${top mem 1}
+${top name 2}${goto 97}${top cpu 2}${goto 135}${top_mem name 2}${goto 210}$alignr${top mem 2}
+${top name 3}${goto 97}${top cpu 3}${goto 135}${top_mem name 3}${goto 210}$alignr${top mem 3}
+${top name 4}${goto 97}${top cpu 4}${goto 135}${top_mem name 4}${goto 210}$alignr${top mem 4}
+${top name 5}${goto 97}${top cpu 5}${goto 135}${top_mem name 5}${goto 210}$alignr${top mem 5}
+
+######### weather ###########
+#${voffset -9}${font Arial:bold:size=10}${color2}WEATHER ${color3}${hr 2}${font}${color1}
+#${font Weather:size=45}${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dWF}
+#${alignc 22}${voffset -60}${font Arial:bold:size=10}${color1}${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dHT}
+#$font${voffset -55}${alignr}${color1}Wind: ${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dWS}
+#${alignr}${color1}Humidity: ${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dHM}
+#${alignr}${color1}Precipitation: ${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dPC}
+#${color1}Sunrise: $alignr${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dSR}${alignr}
+#Sunset: $alignr${execi 1800 conkyForecastWU -C /home/josh/.conky/conkyForecastWU.config -dSS}$color
+
+######### workspace #########
+${voffset -20}${font Arial:bold:size=10}${color2}WORKSPACES ${color3}${hr 2}${font}${color1}
+${font :size=30}$alignc${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 0}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 0}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 1440}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 0}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 2880}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 0}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 4320}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 0}${color0}${endif}$endif${offset 1}▀${color1}
+${voffset -27}$alignc${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 0}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 900}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 1440}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 900}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 2880}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 900}${color0}${endif}$endif${offset 1}▀${color1}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/,.*//'} == 4320}${if_match ${execi .5 wmctrl -d | cut -d\  -f8 | sed 's/.*,//'} == 900}${color0}${endif}$endif${offset 1}▀${color1}${font}
+${voffset -62}${offset 6}$color0${font :size=30}●${voffset -5}${offset -22}$color1${font :bold:size=10}1${offset 165}${voffset -19}${if_match ${monitor_number} == 2}$color0${font :size=30}●${voffset -5}${offset -22}$color1${font :bold:size=10}1${else}$color1${font :size=30}●${voffset -5}${offset -22}$color0${font :bold:size=10}2${endif}
+
+######### weather ###########
+${font Arial:bold:size=10}${color2}TASKS ${color3}${hr 2}${font}${color1}
